@@ -1,78 +1,87 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#030308" />
-  <meta name="description" content="VANTA — a live cinematic world directed by your scroll." />
-  <meta property="og:title" content="VANTA — Enter the Impossible" />
-  <meta property="og:description" content="A continuous real-time cinematic world rendered live in your browser." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="./assets/og.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="./assets/og.jpg" />
-  <title>VANTA — Enter the Impossible</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#020308" />
+  <meta name="description" content="BEYOND — a scroll-directed cinematic journey through Earth, nebulae, gravity, and home." />
+  <title>BEYOND — Scroll to Direct</title>
+  <style>
+    :root{
+      color-scheme:dark;--bg:#020308;--ink:#f4f1e9;--muted:rgba(244,241,233,.58);
+      --cold:#8ee7ff;--warm:#ff9a61;--line:rgba(255,255,255,.13);--p:0;--v:0;
+      --safe-t:max(18px,env(safe-area-inset-top));--safe-r:max(18px,env(safe-area-inset-right));
+      --safe-b:max(18px,env(safe-area-inset-bottom));--safe-l:max(18px,env(safe-area-inset-left));
+      font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+    }
+    *{box-sizing:border-box}html{background:var(--bg);scrollbar-width:thin;scrollbar-color:#657080 #080a10}body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}button,a{font:inherit;color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--cold);outline-offset:5px}.skip{position:fixed;z-index:100;left:12px;top:12px;padding:10px 14px;background:white;color:black;text-decoration:none;transform:translateY(-180%)}.skip:focus{transform:none}
+    .film{position:fixed;z-index:0;inset:0;background:#000;overflow:hidden}.shot{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;opacity:0;filter:saturate(1.18) contrast(1.1) brightness(.78);transform:scale(calc(1.035 + var(--v)*.008));will-change:opacity,transform,filter}.shot.is-active{opacity:1}.shot[data-shot="earthrise"]{object-position:center 48%;filter:saturate(.92) contrast(1.14) brightness(.72)}.shot[data-shot="orion"]{object-position:center;filter:saturate(1.38) contrast(1.08) brightness(.68) hue-rotate(-6deg)}.shot[data-shot="gravity"]{object-position:center;filter:saturate(1.28) contrast(1.18) brightness(.68)}.shot[data-shot="return"]{object-position:center;filter:saturate(1.1) contrast(1.15) brightness(.7)}
+    .fallback{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 50% 42%,rgba(73,139,177,.27),transparent 22%),radial-gradient(circle at 68% 32%,rgba(255,115,58,.17),transparent 21%),linear-gradient(155deg,#020308,#070c19 53%,#020308)}.film.has-failure .fallback{opacity:1}.veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72),transparent 44%,rgba(0,0,0,.18)),linear-gradient(0deg,rgba(0,0,0,.72),transparent 27%,rgba(0,0,0,.34));pointer-events:none}.grade{position:absolute;inset:0;background:radial-gradient(circle at calc(40% + var(--p)*30%) 48%,rgba(87,188,255,.09),transparent 26%),radial-gradient(circle at calc(105% - var(--p)*70%) 16%,rgba(255,111,64,.12),transparent 30%);mix-blend-mode:screen;pointer-events:none}.grain{position:absolute;inset:-40%;opacity:.055;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");animation:grain .22s steps(2) infinite;pointer-events:none}@keyframes grain{0%{transform:translate(-2%,1%)}25%{transform:translate(2%,-3%)}50%{transform:translate(3%,2%)}75%{transform:translate(-1%,3%)}100%{transform:translate(-3%,-1%)}}
+    .bars:before,.bars:after{content:"";position:fixed;z-index:16;left:0;right:0;height:clamp(24px,5.2vh,62px);background:#010104;pointer-events:none}.bars:before{top:0}.bars:after{bottom:0}.frame{position:fixed;z-index:17;inset:clamp(10px,1.35vw,22px);border:1px solid rgba(255,255,255,.09);pointer-events:none}.frame:before,.frame:after{content:"";position:absolute;top:50%;width:44px;height:1px;background:rgba(255,255,255,.35)}.frame:before{left:-1px}.frame:after{right:-1px}
+    .chrome{position:fixed;z-index:30;top:0;left:0;right:0;display:grid;grid-template-columns:1fr minmax(180px,420px) 1fr;align-items:center;gap:20px;padding:calc(var(--safe-t) + 10px) calc(var(--safe-r) + 14px) 0 calc(var(--safe-l) + 14px)}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:10px;font-weight:800;letter-spacing:.24em}.brand i{display:block;width:16px;height:16px;border:1px solid currentColor;border-radius:50%;box-shadow:0 0 18px rgba(142,231,255,.35)}.brand small{font:8px ui-monospace,monospace;color:var(--muted);letter-spacing:.14em}.timeline{display:grid;grid-template-columns:28px 1fr 32px;align-items:center;gap:12px;font:8px ui-monospace,monospace;color:var(--muted)}.timeline b{font-weight:400}.timeline span{height:1px;background:rgba(255,255,255,.15);overflow:hidden}.timeline span:after{content:"";display:block;width:100%;height:100%;transform:scaleX(var(--p));transform-origin:left;background:linear-gradient(90deg,var(--cold),#bba8ff,var(--warm))}.sound{justify-self:end;border:0;background:none;display:flex;align-items:center;gap:9px;padding:10px 0;cursor:pointer;color:var(--muted);font:8px ui-monospace,monospace;letter-spacing:.13em}.sound:hover,.sound[aria-pressed="true"]{color:white}.eq{display:flex;align-items:center;gap:2px;height:12px}.eq i{width:1px;height:3px;background:currentColor}.sound[aria-pressed="true"] .eq i{animation:eq .8s ease-in-out infinite alternate}.sound[aria-pressed="true"] .eq i:nth-child(2){animation-delay:-.26s}.sound[aria-pressed="true"] .eq i:nth-child(3){animation-delay:-.53s}@keyframes eq{to{height:12px}}
+    main{position:relative;z-index:5}.act{position:relative;min-height:150svh}.act__stage{position:sticky;top:0;min-height:100svh;display:flex;align-items:center;padding:calc(var(--safe-t) + 76px) calc(var(--safe-r) + clamp(58px,8vw,130px)) calc(var(--safe-b) + 68px) calc(var(--safe-l) + clamp(26px,7vw,110px))}.act:nth-child(even) .act__stage{justify-content:flex-end;text-align:right}.act--final .act__stage{justify-content:center;text-align:center}.copy{width:min(650px,58vw);opacity:var(--o,0);transform:translate3d(var(--x,0),var(--y,50px),0);filter:blur(var(--blur,12px));will-change:opacity,transform,filter;text-shadow:0 12px 70px rgba(0,0,0,.82)}.kicker{margin:0 0 20px;font:8px ui-monospace,monospace;letter-spacing:.25em;color:rgba(255,255,255,.66)}.kicker b{color:var(--cold);font-weight:400}.title{margin:0;font-family:"Iowan Old Style",Baskerville,"Times New Roman",serif;font-size:clamp(4.6rem,10vw,11rem);font-weight:400;line-height:.76;letter-spacing:-.065em}.title span{display:block}.title .ghost{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.75)}.line{width:64px;height:1px;margin:30px 0 0;background:linear-gradient(90deg,var(--cold),transparent)}.act:nth-child(even) .line{margin-left:auto;background:linear-gradient(270deg,var(--warm),transparent)}.whisper{margin:18px 0 0;font:9px ui-monospace,monospace;letter-spacing:.14em;color:var(--muted)}.act--final .copy{width:min(900px,82vw)}.act--final .title{font-size:clamp(5rem,12vw,14rem)}.actions{display:flex;justify-content:center;gap:12px;margin-top:34px}.actions button,.actions a{padding:14px 22px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.24);backdrop-filter:blur(12px);text-decoration:none;font:9px ui-monospace,monospace;letter-spacing:.14em;cursor:pointer}.actions button{background:white;color:black;border-color:white}.credit{max-width:72ch;margin:34px auto 0;font-size:10px;line-height:1.6;color:rgba(255,255,255,.42)}.credit a{color:inherit}
+    .rail{position:fixed;z-index:28;right:calc(var(--safe-r) + 20px);top:50%;display:flex;flex-direction:column;gap:12px;transform:translateY(-50%)}.rail button{display:flex;align-items:center;justify-content:flex-end;gap:9px;border:0;background:none;padding:4px 0;cursor:pointer;color:rgba(255,255,255,.28);font:8px ui-monospace,monospace}.rail button:after{content:"";width:16px;height:1px;background:currentColor;transition:width .25s}.rail button.is-active{color:white}.rail button.is-active:after{width:34px;background:linear-gradient(90deg,var(--cold),var(--warm))}.cue{position:fixed;z-index:27;left:calc(var(--safe-l) + 24px);bottom:calc(var(--safe-b) + 32px);display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.55);font:8px ui-monospace,monospace;letter-spacing:.17em;opacity:calc(1 - min(1,var(--p)*15))}.cue i{position:relative;width:52px;height:1px;background:rgba(255,255,255,.18);overflow:hidden}.cue i:after{content:"";position:absolute;inset:0;width:45%;background:white;animation:cue 1.5s ease-in-out infinite}@keyframes cue{from{transform:translateX(-120%)}to{transform:translateX(330%)}}
+    .loader{position:fixed;z-index:90;inset:0;display:grid;place-items:center;background:#020308;transition:opacity .8s,visibility .8s}.loader.is-done{opacity:0;visibility:hidden}.loader__inner{text-align:center}.loader strong{font:600 11px ui-monospace,monospace;letter-spacing:.32em}.loader p{margin:13px 0 0;font:8px ui-monospace,monospace;letter-spacing:.17em;color:var(--muted)}.loader span{display:block;width:160px;height:1px;margin:20px auto;background:rgba(255,255,255,.12);overflow:hidden}.loader span:after{content:"";display:block;width:35%;height:100%;background:linear-gradient(90deg,transparent,var(--cold),transparent);animation:load 1.15s infinite}@keyframes load{from{transform:translateX(-130%)}to{transform:translateX(390%)}}
+    @media(max-width:760px){.bars:before,.bars:after{height:18px}.chrome{grid-template-columns:1fr auto}.timeline{display:none}.brand small{display:none}.rail{right:calc(var(--safe-r) + 5px)}.rail button{font-size:0}.rail button:after{width:11px}.rail button.is-active:after{width:22px}.act{min-height:135svh}.act__stage,.act:nth-child(even) .act__stage{justify-content:flex-start;align-items:flex-end;text-align:left;padding:calc(var(--safe-t) + 70px) calc(var(--safe-r) + 50px) calc(var(--safe-b) + 86px) calc(var(--safe-l) + 20px)}.copy,.act--final .copy{width:100%;text-align:left}.title,.act--final .title{font-size:clamp(4rem,21vw,7.5rem);line-height:.78}.act:nth-child(even) .line{margin-left:0;background:linear-gradient(90deg,var(--warm),transparent)}.actions{justify-content:flex-start;flex-wrap:wrap}.credit{margin-left:0;font-size:8px}.cue{left:calc(var(--safe-l) + 20px);bottom:calc(var(--safe-b) + 28px)}.shot[data-shot="gravity"]{object-position:center}}
+    @media(prefers-reduced-motion:reduce){.grain,.cue i:after,.eq i{animation:none!important}.shot{transform:none!important}.copy{filter:none!important;transform:none!important}}
+  </style>
 </head>
 <body>
-  <a class="skip" href="#story">Skip cinematic intro</a>
-  <div class="loader" aria-hidden="true">
-    <div class="loader__orb"><i></i><i></i><i></i></div>
-    <p>FORMING THE WORLD</p>
-    <span><b></b></span>
+  <a class="skip" href="#story">Skip film controls</a>
+  <div class="loader" aria-hidden="true"><div class="loader__inner"><strong>BEYOND</strong><p>PREPARING THE FIRST SHOT</p><span></span></div></div>
+  <div class="film" aria-hidden="true">
+    <div class="fallback"></div>
+    <video class="shot" data-shot="earthrise" data-src-desktop="https://svs.gsfc.nasa.gov/vis/a000000/a004100/a004129/earthrise_720p30.mp4" data-src-mobile="https://svs.gsfc.nasa.gov/vis/a000000/a004100/a004129/earthrise_720p30.mp4" muted playsinline preload="metadata"></video>
+    <video class="shot" data-shot="orion" data-src-desktop="https://upload.wikimedia.org/wikipedia/commons/e/ef/Hubblecast_Light_106.webm" data-src-mobile="https://upload.wikimedia.org/wikipedia/commons/e/ef/Hubblecast_Light_106.webm" muted playsinline preload="none"></video>
+    <video class="shot" data-shot="gravity" data-src-desktop="https://svs.gsfc.nasa.gov/vis/a010000/a014500/a014576/14576_BH_Plunge_Rectilinear_2160x1080_30.mp4" data-src-mobile="https://upload.wikimedia.org/wikipedia/commons/3/39/Black_Holes_Vertical_Video_%28SVS14793_-_Spinning_Black_Hole_w_Audio_%26_Watermark%29.webm" muted playsinline preload="none"></video>
+    <video class="shot" data-shot="return" data-src-desktop="https://svs.gsfc.nasa.gov/vis/a010000/a012100/a012118/EPIC_timelapse-1280-MASTER_high.mp4" data-src-mobile="https://svs.gsfc.nasa.gov/vis/a010000/a012100/a012118/EPIC_timelapse-1280-MASTER_high.mp4" muted playsinline preload="none"></video>
+    <div class="veil"></div><div class="grade"></div><div class="grain"></div>
   </div>
-  <canvas id="cinema" aria-hidden="true"></canvas>
-  <div class="fallback" aria-hidden="true"></div>
-  <div class="veil" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
-  <div class="flash" aria-hidden="true"></div>
-  <header class="hud">
-    <a class="identity" href="#scene-0" aria-label="Vanta, return to origin">
-      <span class="identity__mark"><i></i><i></i><i></i></span><span>VANTA</span>
-    </a>
-    <div class="timeline" aria-hidden="true">
-      <span class="timeline__scene">ORIGIN</span><i><b></b></i><em class="timeline__percent">000</em>
-    </div>
-    <button class="audio" type="button" aria-pressed="false">
-      <span class="audio__icon"><i></i><i></i><i></i><i></i></span><span class="audio__label">ENTER WITH SOUND</span>
-    </button>
+  <div class="bars"></div><div class="frame"></div>
+  <header class="chrome">
+    <a class="brand" href="#leave" aria-label="BEYOND — return to opening"><i></i><span>BEYOND</span><small>FILM_03</small></a>
+    <div class="timeline" aria-hidden="true"><b class="actno">00</b><span></span><b class="timecode">00:00</b></div>
+    <button class="sound" type="button" aria-pressed="false"><span class="eq"><i></i><i></i><i></i></span><b>SOUND / OFF</b></button>
   </header>
-  <div class="coordinates" aria-hidden="true"><span>REALTIME / WEBGL2</span><span class="coordinates__fps">LIVE</span></div>
-  <nav class="rail" aria-label="Cinematic chapters">
-    <button data-target="scene-0" aria-label="Origin"><i></i><span>01</span></button>
-    <button data-target="scene-1" aria-label="Threshold"><i></i><span>02</span></button>
-    <button data-target="scene-2" aria-label="Elsewhere"><i></i><span>03</span></button>
-    <button data-target="scene-3" aria-label="Monolith"><i></i><span>04</span></button>
-    <button data-target="scene-4" aria-label="Eclipse"><i></i><span>05</span></button>
+  <nav class="rail" aria-label="Film chapters">
+    <button data-target="leave">00</button><button data-target="become">01</button><button data-target="fall">02</button><button data-target="return">03</button>
   </nav>
+  <div class="cue" aria-hidden="true"><span>SCROLL TO DIRECT</span><i></i></div>
   <main id="story">
-    <section class="scene scene--origin" id="scene-0" data-scene="0" data-name="ORIGIN">
-      <div class="copy copy--origin">
-        <p class="kicker">AN INTERACTIVE FILM / DIRECTED BY YOU</p>
-        <h1><span>ENTER</span><span>THE</span><strong>IMPOSSIBLE.</strong></h1>
-        <p class="lede">A living world rendered in real time. Your scroll is the camera; your movement changes the frame.</p>
-      </div>
-      <div class="gesture" aria-hidden="true"><span>SCROLL TO CROSS THE EVENT HORIZON</span><i><b></b></i></div>
-    </section>
-    <section class="scene" id="scene-1" data-scene="1" data-name="THRESHOLD">
-      <div class="copy copy--small copy--right"><p class="kicker">01 / THRESHOLD</p><h2>THE CAMERA<br><strong>BECOMES YOU.</strong></h2><p class="lede">Move the pointer. Disturb the field. Then push forward.</p></div>
-    </section>
-    <section class="scene" id="scene-2" data-scene="2" data-name="ELSEWHERE">
-      <div class="copy copy--small"><p class="kicker">02 / ELSEWHERE</p><h2><span>A WORLD</span><span>WITHOUT</span><strong>A CAMERA.</strong></h2><p class="lede">No footage hides behind the interface. Every horizon is calculated in the moment.</p></div>
-    </section>
-    <section class="scene" id="scene-3" data-scene="3" data-name="MONOLITH">
-      <div class="copy copy--small copy--right"><p class="kicker">03 / MONOLITH</p><h2>ARCHITECTURE<br><strong>LEARNS TO MOVE.</strong></h2><p class="lede">Structures rise from darkness and align around the path you create.</p></div>
-    </section>
-    <section class="scene scene--final" id="scene-4" data-scene="4" data-name="ECLIPSE">
-      <div class="copy copy--final">
-        <p class="kicker">04 / ECLIPSE</p><h2><span>THE END IS</span><strong>ANOTHER ENTRANCE.</strong></h2><p class="lede">A cinematic world made from nothing but code, light, and your direction.</p>
-        <div class="actions"><button class="replay" type="button"><span>REPLAY THE FILM</span><i>↗</i></button><a href="https://github.com/YrFnS/cinematic" target="_blank" rel="noreferrer"><span>OPEN THE SOURCE</span><i>↗</i></a></div>
-      </div>
-    </section>
+    <section class="act" id="leave" data-index="0" data-start="42" data-end="79"><div class="act__stage"><div class="copy"><p class="kicker"><b>00</b> / DEPARTURE</p><h1 class="title"><span>LEAVE</span><span class="ghost">THE KNOWN.</span></h1><div class="line"></div><p class="whisper">THE FIRST JOURNEY IS AWAY.</p></div></div></section>
+    <section class="act" id="become" data-index="1" data-start="8" data-end="60"><div class="act__stage"><div class="copy"><p class="kicker"><b>01</b> / TRANSFORMATION</p><h2 class="title"><span>ENTER</span><span class="ghost">THE CLOUD.</span></h2><div class="line"></div><p class="whisper">LIGHT BECOMES LANDSCAPE.</p></div></div></section>
+    <section class="act" id="fall" data-index="2" data-start="5" data-end="49"><div class="act__stage"><div class="copy"><p class="kicker"><b>02</b> / GRAVITY</p><h2 class="title"><span>LET</span><span class="ghost">GO.</span></h2><div class="line"></div><p class="whisper">THE EDGE IS NOT THE END.</p></div></div></section>
+    <section class="act act--final" id="return" data-index="3" data-start="3" data-end="55"><div class="act__stage"><div class="copy"><p class="kicker"><b>03</b> / HOME</p><h2 class="title"><span>RETURN</span><span class="ghost">CHANGED.</span></h2><div class="actions"><button class="replay" type="button">REPLAY FILM</button><a href="https://github.com/YrFnS/cinematic" target="_blank" rel="noreferrer">SOURCE</a></div><p class="credit">Film choreography, sound system, interface, grading, and time-remapping by BEYOND. Source footage: NASA Scientific Visualization Studio and NASA Goddard; Orion material © ESA/Hubble, CC BY 4.0, cropped, muted, graded, and time-remapped. No endorsement implied.</p></div></div></section>
   </main>
-  <div class="webgl-error" role="status" hidden>The live world could not start on this device. The cinematic text edition remains available.</div>
-  <noscript><div class="noscript"><strong>VANTA</strong><p>Enable JavaScript to enter the live cinematic world.</p></div></noscript>
-  <script defer src="./shader.js"></script>
-  <script defer src="./main.js"></script>
+<script>
+(()=>{
+  'use strict';
+  const root=document.documentElement,film=document.querySelector('.film'),loader=document.querySelector('.loader');
+  const shots=[...document.querySelectorAll('.shot')],acts=[...document.querySelectorAll('.act')],rail=[...document.querySelectorAll('.rail button')];
+  const actNo=document.querySelector('.actno'),timecode=document.querySelector('.timecode'),soundButton=document.querySelector('.sound'),soundText=soundButton.querySelector('b');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;const mobile=matchMedia('(max-width:760px),(hover:none) and (pointer:coarse)').matches;
+  const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));const smooth=n=>{n=clamp(n);return n*n*(3-2*n)};
+  let layout=[],maxScroll=1,active=-1,lastY=scrollY,lastAt=performance.now(),raf=0,unlocked=false,audio=null;
+  shots.forEach((video,i)=>{video.src=mobile?video.dataset.srcMobile:video.dataset.srcDesktop;video.addEventListener('error',()=>{video.classList.add('is-failed');if(shots.every(v=>v.classList.contains('is-failed')))film.classList.add('has-failure')});if(i===0){video.preload='auto';video.addEventListener('loadeddata',()=>loader.classList.add('is-done'),{once:true})}});
+  setTimeout(()=>loader.classList.add('is-done'),4200);
+  const ensureLoaded=i=>{[i,i+1].forEach(n=>{const v=shots[n];if(v&&v.preload==='none'){v.preload='auto';v.load()}})};
+  function measure(){layout=acts.map(el=>({el,top:el.offsetTop,height:el.offsetHeight,idx:+el.dataset.index,start:+el.dataset.start,end:+el.dataset.end}));maxScroll=Math.max(1,document.documentElement.scrollHeight-innerHeight);update(true)}
+  function seek(v,t){if(!Number.isFinite(v.duration)||v.readyState<1||v.seeking)return;if(Math.abs(v.currentTime-t)>.055){try{v.currentTime=Math.min(Math.max(.01,t),Math.max(.01,v.duration-.03))}catch{}}}
+  function update(force=false){raf=0;const now=performance.now(),y=scrollY,dt=Math.max(16,now-lastAt),velocity=clamp(Math.abs(y-lastY)/dt,0,2.8),progress=clamp(y/maxScroll);root.style.setProperty('--p',progress.toFixed(5));root.style.setProperty('--v',velocity.toFixed(3));
+    let nearest=0,best=Infinity;const center=y+innerHeight*.52;
+    layout.forEach((item,i)=>{const local=(center-item.top)/item.height,dist=Math.abs(item.top+item.height*.5-center);if(dist<best){best=dist;nearest=i}const fade=Math.min(smooth(local/.25),1-smooth((local-.72)/.28));const opacity=clamp(fade);const copy=item.el.querySelector('.copy');copy.style.setProperty('--o',opacity.toFixed(3));copy.style.setProperty('--y',`${((.5-clamp(local))*82).toFixed(1)}px`);copy.style.setProperty('--x',`${((i%2?1:-1)*(1-opacity)*32).toFixed(1)}px`);copy.style.setProperty('--blur',`${((1-opacity)*(reduced?0:12)).toFixed(1)}px`);
+      const v=shots[item.idx];if(v&&v.readyState>=1){const clipEnd=Math.min(item.end,Math.max(.02,v.duration-.03)),clipStart=Math.min(item.start,clipEnd);const t=clipStart+clamp(local)*(clipEnd-clipStart);seek(v,t)}
+    });
+    if(nearest!==active){active=nearest;ensureLoaded(active);shots.forEach((v,i)=>v.classList.toggle('is-active',i===active));rail.forEach((b,i)=>b.classList.toggle('is-active',i===active));actNo.textContent=String(active).padStart(2,'0');if(audio)audio.setChapter(active)}
+    const seconds=Math.round(progress*96);timecode.textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;if(audio)audio.setProgress(progress,velocity);lastY=y;lastAt=now;
+  }
+  addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(update)},{passive:true});addEventListener('resize',()=>setTimeout(measure,100),{passive:true});addEventListener('load',measure,{once:true});
+  rail.forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:reduced?'auto':'smooth'})));document.querySelector('.replay').addEventListener('click',()=>scrollTo({top:0,behavior:reduced?'auto':'smooth'}));
+  function createAudio(){const ctx=new (window.AudioContext||window.webkitAudioContext)(),master=ctx.createGain(),filter=ctx.createBiquadFilter(),drone1=ctx.createOscillator(),drone2=ctx.createOscillator(),pulse=ctx.createOscillator(),pulseGain=ctx.createGain();master.gain.value=.0001;filter.type='lowpass';filter.frequency.value=560;filter.Q.value=.8;drone1.type='sine';drone1.frequency.value=43.65;drone2.type='triangle';drone2.frequency.value=65.41;pulse.type='sine';pulse.frequency.value=130.81;pulseGain.gain.value=.018;drone1.connect(filter);drone2.connect(filter);pulse.connect(pulseGain).connect(filter);filter.connect(master).connect(ctx.destination);drone1.start();drone2.start();pulse.start();const noiseBuffer=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),data=noiseBuffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);const noise=ctx.createBufferSource(),noiseFilter=ctx.createBiquadFilter(),noiseGain=ctx.createGain();noise.buffer=noiseBuffer;noise.loop=true;noiseFilter.type='bandpass';noiseFilter.frequency.value=900;noiseFilter.Q.value=.5;noiseGain.gain.value=.018;noise.connect(noiseFilter).connect(noiseGain).connect(master);noise.start();return{ctx,master,filter,drone1,drone2,pulseGain,setProgress(p,v){const t=ctx.currentTime;filter.frequency.setTargetAtTime(360+p*1800+v*950,t,.12);master.gain.setTargetAtTime(.13+v*.035,t,.16);pulseGain.gain.setTargetAtTime(.01+.025*Math.sin(p*28)**2,t,.08)},setChapter(c){const t=ctx.currentTime;const roots=[43.65,55,36.71,49];drone1.frequency.exponentialRampToValueAtTime(roots[c],t+.75);drone2.frequency.exponentialRampToValueAtTime(roots[c]*1.5,t+.75);const impact=ctx.createOscillator(),g=ctx.createGain();impact.type='sine';impact.frequency.setValueAtTime(88,t);impact.frequency.exponentialRampToValueAtTime(28,t+.8);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+.9);impact.connect(g).connect(master);impact.start(t);impact.stop(t+1)}}}
+  async function toggleSound(){try{if(!audio){audio=createAudio();await audio.ctx.resume();unlocked=true;soundButton.setAttribute('aria-pressed','true');soundText.textContent='SOUND / ON';audio.setChapter(Math.max(0,active));return}const on=soundButton.getAttribute('aria-pressed')==='true';audio.master.gain.setTargetAtTime(on ? .0001 : .14,audio.ctx.currentTime,.12);soundButton.setAttribute('aria-pressed',String(!on));soundText.textContent=on?'SOUND / OFF':'SOUND / ON'}catch{soundText.textContent='SOUND / N/A'}}
+  soundButton.addEventListener('click',toggleSound);addEventListener('keydown',e=>{if(e.key.toLowerCase()==='m'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();toggleSound()}});
+  function prime(){shots.forEach(v=>{const p=v.play();if(p?.then)p.then(()=>v.pause()).catch(()=>{})})}addEventListener('pointerdown',prime,{once:true,passive:true});measure();
+})();
+</script>
 </body>
 </html>
