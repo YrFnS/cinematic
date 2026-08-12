@@ -3,26 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#020408" />
-<meta name="description" content="HELIOS — a playable cinematic journey rendered live in the browser." />
-<title>HELIOS — Wake the Machine</title>
-<link rel="stylesheet" href="./styles.css" />
+<meta name="theme-color" content="#04050a" />
+<meta name="description" content="MIRAGE is a real-time cinematic world rendered live in WebGL." />
+<title>MIRAGE — A World Rendered While You Watch</title>
+<style>
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#04050a;color:#f4efe5;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.boot{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:18px}.boot__sigil{position:relative;width:76px;height:76px}.boot__sigil i{position:absolute;inset:0;border:1px solid rgba(158,238,255,.66);border-radius:50%;animation:spin 8s linear infinite}.boot__sigil i:nth-child(2){inset:13px;border-color:rgba(255,173,112,.62);animation-direction:reverse}.boot__sigil i:nth-child(3){inset:29px;background:#f4efe5;border:0;box-shadow:0 0 28px rgba(158,238,255,.34)}.boot p{margin:0;font-size:8px;letter-spacing:.25em;color:rgba(244,239,229,.55)}.boot small{max-width:420px;text-align:center;font-size:9px;line-height:1.55;color:rgba(244,239,229,.4)}@keyframes spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.boot__sigil i{animation:none}}
+</style>
 </head>
 <body>
-<a class="skip" href="#enter">Skip to enter</a>
-<div class="fallback" aria-hidden="true"></div><canvas id="world" aria-hidden="true"></canvas><div class="grade"></div><div class="grain"></div><div class="flare"></div><div class="frame"></div>
-<section class="boot" id="gate">
-  <div class="boot__inner"><div class="sigil"><i></i><i></i><i></i></div><h1><span>WAKE</span><em>THE MACHINE.</em></h1><p>NOT A PAGE. NOT A FILM. A LIVING CAMERA YOU CAN STEER.</p><button class="enter" id="enter">ENTER HELIOS</button></div>
-</section>
-<div class="hud" aria-live="polite">
-  <div class="top"><div class="brand"><i></i><span>HELIOS</span><small>LIVE_WORLD / 01</small></div><div class="timeline"><b class="chapterNo">00 / VOID</b><span class="timeline__bar"></span><em class="clock">00:00</em></div><button class="sound" type="button" aria-pressed="false"><span class="eq"><i></i><i></i><i></i></span><span>SOUND / OFF</span></button></div>
-  <div class="chapter"><b class="chapterIndex">00 / VOID</b><strong class="chapterTitle">THE SIGNAL WAITS.</strong><span class="chapterHint">MOVE TO STEER · HOLD TO BOOST · TAP TO PULSE</span></div>
-  <div class="controls"><span>MOVE / STEER</span><span>HOLD / ACCELERATE</span><span>E / PULSE</span><i></i></div>
-  <div class="reticle"><i></i></div><div class="energy"><span>CHARGE</span><i><b></b></i><em class="energyValue">0 / 3</em></div>
-</div>
-<div class="wing wing--l"></div><div class="wing wing--r"></div><div class="beacons"><button class="beacon" data-id="0" aria-label="Absorb signal one"><i></i><span>ABSORB / 01</span></button><button class="beacon" data-id="1" aria-label="Absorb signal two"><i></i><span>ABSORB / 02</span></button><button class="beacon" data-id="2" aria-label="Absorb signal three"><i></i><span>ABSORB / 03</span></button></div><div class="status">SYSTEM READY</div>
-<section class="finale"><div class="finale__inner"><p>THE MACHINE IS AWAKE</p><h2>YOU CROSSED<span>THE HORIZON.</span></h2><button class="replay">FLY AGAIN</button></div></section>
-<script defer src="./shader.js"></script>
-<script defer src="./main.js"></script>
+<div class="boot" role="status"><div class="boot__sigil" aria-hidden="true"><i></i><i></i><i></i></div><p>FORMING MIRAGE</p><small>Preparing the live world. No footage or image sequence is being loaded.</small></div>
+<script>
+(async()=>{try{const response=await fetch('./world.txt');if(!response.ok)throw new Error('world payload unavailable');const encoded=await response.text();const compressed=Uint8Array.from(atob(encoded),character=>character.charCodeAt(0));if(!('DecompressionStream' in window))throw new Error('gzip decompression is not supported by this browser');const stream=new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));const html=await new Response(stream).text();document.open();document.write(html);document.close()}catch(error){console.error('[MIRAGE loader]',error);document.body.innerHTML='<div class="boot"><p>THE WORLD COULD NOT OPEN.</p><small>Reload in a current browser with WebGL 2 enabled.</small></div>'}})();
+</script>
 </body>
 </html>

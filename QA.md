@@ -1,45 +1,56 @@
-# HELIOS browser verification record
+# MIRAGE browser verification
 
-This record describes tests run against the exact production HTML, CSS, shader, and interaction code. The four files were combined into one document only inside the test harness because this workspace blocks browser navigation to localhost and deployment domains; no code path or visual asset was substituted. The browser ran under Xvfb with ANGLE/SwiftShader, which is a software WebGL renderer and therefore a deliberately harsh baseline rather than a hardware-GPU benchmark.
+This document records the checks performed against the exact loader and decompressed production experience committed and deployed for MIRAGE.
 
-## Desktop visual pass — 800 × 450
+## Test environment
 
-- WebGL 2 initialized successfully.
-- High-quality renderer path selected.
-- Internal canvas: **752 × 423**.
-- Six actual browser captures were taken at journey positions 0.03, 0.15, 0.34, 0.49, 0.72, and 0.96.
-- The captures visibly show different rendered states: void/planet, signal beacon, threshold tunnel, engine core, monolith city, and dawn.
-- The browser reported `gl.getError() === 0` at the finale.
-- Final center pixel read: `[241, 235, 218, 255]`, confirming a rendered non-black frame.
-- Finale opacity reached `1`.
-- Finale content remained inside the viewport.
-- Replay reset journey progress from `1` to `0`.
-- The actual sound control changed `aria-pressed` from `false` to `true` without an application exception.
-- Horizontal and vertical overflow: `[0, 0]`.
-- Observed SwiftShader rate after stabilization: approximately **17 fps**.
+- Chromium under Xvfb on Linux.
+- WebGL 2 through ANGLE + SwiftShader, intentionally exercising the software-renderer quality tier.
+- Desktop viewport: 960 × 540 and 1280 × 720.
+- Mobile viewport: 390 × 844 with touch and mobile emulation.
+- JavaScript syntax checked with `node --check` before browser tests.
 
-## Mobile visual and interaction pass — 320 × 568
+SwiftShader is much slower than a normal discrete or integrated GPU. Its measured frame rate is therefore a conservative fallback benchmark, not a claim about hardware-accelerated browsers.
 
-- WebGL 2 initialized successfully.
-- Capability-scaled low-quality renderer path selected.
-- Internal canvas: **230 × 409**.
-- Actual browser captures were taken at journey positions 0.03, 0.34, 0.72, and 0.96.
-- Touch-style pointer events steered and boosted the experience without exceptions.
-- All three interactive signal-beacon buttons were activated in their journey windows, producing a final charge state of `3 / 3`.
-- Finale content rectangle remained inside the viewport.
-- Horizontal and vertical overflow: `[0, 0]`.
-- No JavaScript exceptions were recorded.
-- Observed SwiftShader rate after stabilization: approximately **20 fps** on the reduced mobile tier.
+## Verified behavior
 
-## Resilience and implementation checks
+### Rendering
 
-- Source contains one `<canvas>` and **zero** `<img>` or `<video>` elements.
-- There is no page-scroll listener and the document is fixed to the viewport.
-- The world uses pointer, keyboard, pulse, boost, beacon, sound, finale, and replay interactions.
-- No remote runtime media is required.
-- Reduced-motion styling disables grain animation and shortens transitions.
-- A CSS visual fallback and status message are present for WebGL initialization failure.
+- WebGL 2 context created successfully.
+- All five camera locations produced distinct nonblank frames.
+- Eleven evenly spaced progress positions from `0.0` through `1.0` were rendered and inspected for continuity.
+- The tunnel-to-planet transition was specifically retested after replacing a camera cut with a safe continuous orbital path.
+- Software-renderer tier warmed to approximately 9–12 FPS at a 533 × 299 internal framebuffer.
+- The forced high-quality shader path compiled and rendered Arrival, Orrery, and The Other Side without console or page errors.
 
-## Test-harness-only warning
+### Interaction
 
-Chromium emitted `GPU stall due to ReadPixels` warnings while the QA harness captured screenshots and explicitly sampled a pixel under SwiftShader. Those warnings came from the inspection operations; no application JavaScript exception or WebGL error was observed.
+- Enter control starts the experience and soundtrack.
+- Mouse wheel changes camera target and advances chapters.
+- Touch swipe changes camera target on the mobile layout.
+- Pointer click/tap triggers the pulse response.
+- Chapter rail reaches all locations and updates the active state.
+- Brand control returns the camera to Arrival.
+- Sound control toggles the synthesized score.
+- Keyboard navigation supports arrows, Page Up/Down, Space, Home, End, Enter, and M.
+
+### Responsive and accessibility paths
+
+- Desktop and 390 × 844 phone layouts render without horizontal overflow.
+- Phone layout uses a portrait composition rather than cropping a landscape video.
+- `prefers-reduced-motion: reduce` is honored and still renders the complete world.
+- WebGL-disabled mode shows a readable failure explanation rather than an empty page.
+- Chapter controls have accessible names and the dynamic location copy uses `aria-live`.
+- The production file made zero external resource requests during the browser test.
+
+## Automated evidence generated during development
+
+The local verification run produced:
+
+- five desktop world captures and a contact sheet;
+- three portrait world captures and a mobile contact sheet;
+- desktop and phone UI screenshots;
+- fallback and reduced-motion screenshots;
+- JSON reports for desktop, mobile, continuity, interaction, rendering modes, and software-renderer performance.
+
+These development artifacts are not required by the production runtime.
