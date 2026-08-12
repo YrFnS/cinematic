@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -11,9 +12,9 @@
       ]
     },
     {
-      "source": "/payload/(.*)",
+      "source": "/(.*)\\.(js|css)",
       "headers": [
-        {"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}
+        {"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"}
       ]
     }
   ]
