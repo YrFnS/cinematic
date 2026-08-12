@@ -1,50 +1,56 @@
-# SENTINEL verification record
+# MIRAGE browser verification
 
-The experience was tested from the exact self-contained production source in Chromium using WebGL 2 through ANGLE/SwiftShader. SwiftShader is a software renderer and therefore a deliberately harsh performance baseline, not a hardware-GPU benchmark.
+This document records the checks performed against the exact `index.html` committed and deployed for MIRAGE.
 
-## Desktop — 960 × 540
+## Test environment
 
-- WebGL 2 initialized successfully.
-- Renderer: ANGLE / Vulkan / SwiftShader.
-- No console warnings, JavaScript exceptions, or GL errors in the standard path.
-- Internal canvas: 581 × 327 under the software-renderer quality tier.
-- The sampled approach, threshold, sanctum, awakening, dawn, and finale frames were non-blank and visually distinct.
-- Wheel input increased progress from `0.200` to `0.343`.
-- Pointer drag increased progress from `0.343` to `0.650`.
-- End and Home resolved to progress `1` and `0`.
-- The chapter rail resolved the Sanctum camera point to `0.520`.
-- Audio activation changed `aria-pressed` to `true` without an exception.
-- Final WebGL center pixel read: `[233, 209, 136, 255]`; GL error code: `0`.
-- The finale reached opacity `1` and both calls to action remained inside the viewport.
-- Horizontal overflow: `0`; vertical overflow: `0`; document scroll position remained `[0, 0]`.
-- Recorded journey: 960 × 540 VP8, 25 fps capture, 12.64 seconds.
+- Chromium under Xvfb on Linux.
+- WebGL 2 through ANGLE + SwiftShader, intentionally exercising the software-renderer quality tier.
+- Desktop viewport: 960 × 540 and 1280 × 720.
+- Mobile viewport: 390 × 844 with touch and mobile emulation.
+- JavaScript syntax checked with `node --check` before browser tests.
 
-## Mobile — 390 × 844
+SwiftShader is much slower than a normal discrete or integrated GPU. Its measured frame rate is therefore a conservative fallback benchmark, not a claim about hardware-accelerated browsers.
 
-- WebGL 2 initialized successfully.
-- No console warnings or JavaScript exceptions.
-- Internal canvas: 296 × 641 under the mobile/software tier.
-- Touch-style drag increased progress from `0.150` to `0.623`.
-- The final state reached progress `0.980` and finale opacity `1`.
-- Header, chapter rail, finale, and replay control remained within the viewport.
-- Horizontal overflow: `0`; vertical overflow: `0`.
-- Observed software-renderer rate at the final state: approximately 14 fps. Hardware devices are capability-scaled independently.
+## Verified behavior
 
-## Accessibility and resilience
+### Rendering
 
-- `prefers-reduced-motion` disables grain animation and shortens interface transitions.
-- WebGL-disabled test entered the `no-webgl ready` state.
-- The fallback visual layer reached opacity `1` and the canvas was removed from display.
-- The fallback status message remained readable.
-- Keyboard controls, visible focus treatment, semantic buttons, a skip link, and a generated-audio opt-in are present.
+- WebGL 2 context created successfully.
+- All five camera locations produced distinct nonblank frames.
+- Eleven evenly spaced progress positions from `0.0` through `1.0` were rendered and inspected for continuity.
+- The tunnel-to-planet transition was specifically retested after replacing a camera cut with a safe continuous orbital path.
+- Software-renderer tier warmed to approximately 9–12 FPS at a 533 × 299 internal framebuffer.
+- The forced high-quality shader path compiled and rendered Arrival, Orrery, and The Other Side without console or page errors.
 
-## Defects caught during verification
+### Interaction
 
-Testing found and corrected these issues before publication:
+- Enter control starts the experience and soundtrack.
+- Mouse wheel changes camera target and advances chapters.
+- Touch swipe changes camera target on the mobile layout.
+- Pointer click/tap triggers the pulse response.
+- Chapter rail reaches all locations and updates the active state.
+- Brand control returns the camera to Arrival.
+- Sound control toggles the synthesized score.
+- Keyboard navigation supports arrows, Page Up/Down, Space, Home, End, Enter, and M.
 
-1. Fragment-shader declaration error during an early build.
-2. A blank/compositor race at the original finale transition.
-3. A mobile pointer-capture exception.
-4. Excessive emissive brightness on the artifact rings.
-5. An overly faceted and flat final sun.
-6. Software-renderer load that required lower geometry and resolution tiers.
+### Responsive and accessibility paths
+
+- Desktop and 390 × 844 phone layouts render without horizontal overflow.
+- Phone layout uses a portrait composition rather than cropping a landscape video.
+- `prefers-reduced-motion: reduce` is honored and still renders the complete world.
+- WebGL-disabled mode shows a readable failure explanation rather than an empty page.
+- Chapter controls have accessible names and the dynamic location copy uses `aria-live`.
+- The production file made zero external resource requests during the browser test.
+
+## Automated evidence generated during development
+
+The local verification run produced:
+
+- five desktop world captures and a contact sheet;
+- three portrait world captures and a mobile contact sheet;
+- desktop and phone UI screenshots;
+- fallback and reduced-motion screenshots;
+- JSON reports for desktop, mobile, continuity, interaction, rendering modes, and software-renderer performance.
+
+These development artifacts are not required by the production runtime.

@@ -1,40 +1,25 @@
-# SENTINEL — The Temple Remembers
+# MIRAGE — A Real-Time Cinematic World
 
-**Live experience:** https://cinematic-two-ecru.vercel.app
+MIRAGE is an interactive WebGL 2 journey through one continuous generated environment. It is not a background video, image sequence, or vertically scrolling article: the document stays fixed while wheel, swipe, keyboard, and chapter controls move a live camera through the world.
 
-SENTINEL is a fixed-viewport, real-time WebGL journey through a monolithic temple. It is not a scrolling page and it does not play background footage: wheel, drag, touch, keyboard, and chapter controls move an authored camera through one continuous 3D world.
+## Journey
 
-## Experience
+1. **Arrival** — reflective dunes, an eclipse, and distant monoliths.
+2. **The Gate** — a repeating obsidian corridor with emissive slits.
+3. **Orrery** — a reactive iridescent core surrounded by moving orbital sculptures.
+4. **The Veil** — a continuous ring tunnel that bends toward another world.
+5. **The Other Side** — a pointer-controlled orbit around a procedural gas giant.
 
-1. **Approach** — enter a cold, repeating stone passage.
-2. **Threshold** — cross the illuminated gate as the architecture closes around the camera.
-3. **Sanctum** — orbit a responsive artifact at the center of the temple.
-4. **Awakening** — the artifact opens into rings, shards, and warm light.
-5. **Dawn** — the corridor releases into a transformed horizon.
+Everything visible in the world is rendered from signed-distance geometry, procedural materials, ray-marched lighting, atmosphere, and a real-time camera. The optional soundtrack is synthesized with the Web Audio API.
 
 ## Controls
 
-- Mouse wheel: move forward or backward through the world
-- Pointer drag: travel through the world
-- Pointer movement: look around
-- Touch drag: move through the world on mobile
-- Arrow keys / Page Up / Page Down / Space: step through the journey
-- Home / End: jump to the beginning or ending
-- M: toggle the generated score
-- Chapter rail: jump to an authored camera point
-
-## Technical direction
-
-- One self-contained `index.html`
-- Hand-authored WebGL 2 raster renderer
-- Real 3D geometry, perspective camera, lighting, fog, particles, procedural materials, and an animated artifact
-- Generated Web Audio score with chapter impacts
-- No images, video files, model files, external fonts, runtime libraries, package manager, or build step
-- Adaptive internal resolution and geometry quality
-- Software-renderer detection and lower-cost fallback tier
-- Dedicated mobile composition and touch controls
-- Reduced-motion mode
-- CSS fallback when WebGL 2 is unavailable
+- **Wheel / swipe / Arrow keys / Page Up / Page Down** — move the camera.
+- **Pointer** — look around.
+- **Click / tap** — disturb the energy field.
+- **Chapter rail** — jump to a location.
+- **M** — toggle the generative soundtrack.
+- **Home / End** — return to the opening or jump to the final orbit.
 
 ## Run locally
 
@@ -42,11 +27,23 @@ SENTINEL is a fixed-viewport, real-time WebGL journey through a monolithic templ
 python3 -m http.server 4173
 ```
 
-Open `http://localhost:4173`.
+Open `http://localhost:4173` in a current browser with WebGL 2 enabled.
+
+## Architecture
+
+The production experience is deliberately self-contained:
+
+```text
+index.html     UI, interaction, WebGL renderer, GLSL world, and Web Audio score
+vercel.json    Static deployment and security headers
+QA.md          Browser verification evidence and known test environment
+```
+
+There are no runtime packages, remote media files, model downloads, or third-party script requests.
 
 ## Verification
 
-The complete test matrix and captured evidence are documented in [`QA.md`](QA.md). Testing covers real WebGL rendering, sampled visual states, wheel/drag/touch/keyboard interaction, sound activation, desktop/mobile bounds, zero page scrolling, the finale, reduced motion, and the no-WebGL fallback.
+The exact production file was tested in Chromium on desktop and phone-sized viewports. The matrix covers shader compilation, all five locations, camera continuity, wheel and touch controls, chapter navigation, sound, reduced motion, WebGL failure fallback, layout overflow, and both low- and high-quality shader paths. See [QA.md](./QA.md).
 
 ## License
 

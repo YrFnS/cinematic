@@ -1,4 +1,19 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05080b"><meta name="description" content="SENTINEL — an interactive real-time journey through a monolithic temple of stone, water and light."><title>SENTINEL — The Temple Remembers</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05080b;color:#f3efe5;font-family:ui-monospace,monospace}.gate{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;font-size:9px;letter-spacing:.25em}.gate i{width:74px;height:74px;border:1px solid #f1c77e;border-radius:50%;box-shadow:0 0 34px rgba(241,199,126,.12);animation:s 3s linear infinite}@keyframes s{to{transform:rotate(360deg)}}.gate span{color:rgba(243,239,229,.55)}</style></head><body><div class="gate"><i></i><span>ENTERING SENTINEL</span></div><script>
-(async()=>{try{const paths=Array.from({length:8},(_,i)=>`./payload/${String(i).padStart(2,'0')}.txt`);const responses=await Promise.all(paths.map(p=>fetch(p,{cache:'no-store'})));if(responses.some(r=>!r.ok))throw new Error('payload unavailable');const b64=(await Promise.all(responses.map(r=>r.text()))).join('');const bin=atob(b64);const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));if(!('DecompressionStream' in window))throw new Error('gzip decompression unsupported');const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));const html=await new Response(stream).text();document.open();document.write(html);document.close()}catch(error){document.body.innerHTML='<div class="gate"><span>THE WORLD COULD NOT OPEN. RELOAD TO TRY AGAIN.</span></div>';console.error('[SENTINEL loader]',error)}})();
-</script></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#04050a" />
+<meta name="description" content="MIRAGE is a real-time cinematic world rendered live in WebGL." />
+<title>MIRAGE — A World Rendered While You Watch</title>
+<style>
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#04050a;color:#f4efe5;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.boot{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:18px}.boot__sigil{position:relative;width:76px;height:76px}.boot__sigil i{position:absolute;inset:0;border:1px solid rgba(158,238,255,.66);border-radius:50%;animation:spin 8s linear infinite}.boot__sigil i:nth-child(2){inset:13px;border-color:rgba(255,173,112,.62);animation-direction:reverse}.boot__sigil i:nth-child(3){inset:29px;background:#f4efe5;border:0;box-shadow:0 0 28px rgba(158,238,255,.34)}.boot p{margin:0;font-size:8px;letter-spacing:.25em;color:rgba(244,239,229,.55)}.boot small{max-width:420px;text-align:center;font-size:9px;line-height:1.55;color:rgba(244,239,229,.4)}@keyframes spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.boot__sigil i{animation:none}}
+</style>
+</head>
+<body>
+<div class="boot" role="status"><div class="boot__sigil" aria-hidden="true"><i></i><i></i><i></i></div><p>FORMING MIRAGE</p><small>Preparing the live world. No footage or image sequence is being loaded.</small></div>
+<script>
+(async()=>{try{const count=7;const paths=Array.from({length:count},(_,i)=>`./payload/${String(i).padStart(2,'0')}.txt`);const responses=await Promise.all(paths.map(path=>fetch(path)));if(responses.some(response=>!response.ok))throw new Error('world payload unavailable');const encoded=(await Promise.all(responses.map(response=>response.text()))).join('');const compressed=Uint8Array.from(atob(encoded),character=>character.charCodeAt(0));if(!('DecompressionStream' in window))throw new Error('gzip decompression is not supported by this browser');const stream=new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));const html=await new Response(stream).text();document.open();document.write(html);document.close()}catch(error){console.error('[MIRAGE loader]',error);document.body.innerHTML='<div class="boot"><p>THE WORLD COULD NOT OPEN.</p><small>Reload in a current browser with WebGL 2 enabled.</small></div>'}})();
+</script>
+</body>
+</html>
