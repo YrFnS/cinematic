@@ -1,0 +1,234 @@
+@media (max-width: 980px) {
+  .topbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .progress {
+    position: fixed;
+    top: auto;
+    right: calc(var(--safe-right) + 20px);
+    bottom: calc(var(--safe-bottom) + 6px);
+    left: calc(var(--safe-left) + 20px);
+    grid-template-columns: 24px 1fr 31px;
+    width: auto;
+  }
+
+  .chapter__inner {
+    padding-right: calc(var(--safe-right) + 128px);
+  }
+
+  .chapter__copy {
+    width: min(760px, 78vw);
+  }
+}
+
+@media (max-width: 720px) {
+  .frame {
+    inset: 7px;
+  }
+
+  .grain {
+    opacity: 0.036;
+  }
+
+  .topbar {
+    padding-top: calc(var(--safe-top) + 8px);
+    padding-right: calc(var(--safe-right) + 14px);
+    padding-left: calc(var(--safe-left) + 14px);
+  }
+
+  .brand__edition {
+    display: none;
+  }
+
+  .sound-toggle__label {
+    display: none;
+  }
+
+  .chapter-nav {
+    top: auto;
+    right: 50%;
+    bottom: calc(var(--safe-bottom) + 25px);
+    flex-direction: row;
+    gap: 1px;
+    transform: translateX(50%);
+  }
+
+  .chapter-nav button {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    min-width: 39px;
+    min-height: 34px;
+  }
+
+  .chapter-nav button span {
+    display: none;
+  }
+
+  .chapter-nav button i {
+    width: 18px;
+  }
+
+  .chapter-nav button em {
+    display: none;
+  }
+
+  .chapter-nav button.is-active i {
+    width: 30px;
+  }
+
+  .progress {
+    right: calc(var(--safe-right) + 56px);
+    bottom: calc(var(--safe-bottom) + 1px);
+    left: calc(var(--safe-left) + 56px);
+  }
+
+  .chapter {
+    min-height: 116svh;
+  }
+
+  .chapter__inner,
+  .chapter[data-align="right"] .chapter__inner,
+  .chapter[data-align="center"] .chapter__inner {
+    align-items: center;
+    justify-content: flex-start;
+    padding:
+      calc(var(--safe-top) + 74px)
+      calc(var(--safe-right) + 25px)
+      calc(var(--safe-bottom) + 96px)
+      calc(var(--safe-left) + 25px);
+    text-align: left;
+  }
+
+  .chapter__copy,
+  .chapter--final .chapter__copy {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .chapter[data-align="right"] .chapter__copy,
+  .chapter[data-align="center"] .chapter__copy {
+    text-align: left;
+  }
+
+  .chapter[data-align="right"] .chapter__eyebrow,
+  .chapter[data-align="center"] .chapter__eyebrow {
+    justify-content: flex-start;
+  }
+
+  .chapter[data-align="right"] .chapter__body,
+  .chapter--final .chapter__body {
+    margin-right: 0;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .chapter[data-align="right"] .chapter__note {
+    justify-content: flex-start;
+  }
+
+  .chapter__title,
+  .chapter__title--hero,
+  .chapter__title--final {
+    font-size: clamp(3.35rem, 15vw, 6.2rem);
+    line-height: 0.86;
+    letter-spacing: -0.06em;
+  }
+
+  .chapter__title--hero {
+    max-width: none;
+  }
+
+  .chapter__body {
+    max-width: 31rem;
+    font-size: 0.98rem;
+    line-height: 1.58;
+  }
+
+  .chapter__meta {
+    gap: 18px 26px;
+  }
+
+  .chapter__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .button {
+    width: min(100%, 300px);
+  }
+
+  .chapter__signature {
+    text-align: left;
+  }
+
+  .scroll-cue {
+    display: none;
+  }
+}
+
+@media (max-width: 440px) {
+  .brand__name {
+    font-size: 9px;
+  }
+
+  .chapter__inner,
+  .chapter[data-align="right"] .chapter__inner,
+  .chapter[data-align="center"] .chapter__inner {
+    padding-right: calc(var(--safe-right) + 19px);
+    padding-left: calc(var(--safe-left) + 19px);
+  }
+
+  .chapter__title,
+  .chapter__title--hero,
+  .chapter__title--final {
+    font-size: clamp(3rem, 14.5vw, 4.5rem);
+  }
+
+  .chapter__eyebrow {
+    margin-bottom: 22px;
+  }
+
+  .chapter__body {
+    font-size: 0.91rem;
+  }
+
+  .chapter__meta div:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .grain,
+  .boot__mark,
+  .boot__line i,
+  .scroll-cue b,
+  .sound-toggle__bars i {
+    animation: none !important;
+  }
+
+  .chapter__copy {
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .pointer-aura {
+    display: none;
+  }
+
+  .button,
+  .button::before,
+  .chapter-nav button,
+  .chapter-nav button i,
+  .chapter-nav button em {
+    transition-duration: 0.01ms !important;
+  }
+}
