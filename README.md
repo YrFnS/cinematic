@@ -1,8 +1,10 @@
 # AETHER — A Cinematic Web Experiment
 
+**Live production experience:** https://cinematic-two-ecru.vercel.app
+
 AETHER is a continuous, scroll-directed web experience generated entirely in the browser from code.
 
-There are no stock images, videos, 3D model files, external fonts, runtime packages, or third-party rendering services. The world is created by a single WebGL 2 shader, while the optional score is synthesized with the Web Audio API.
+There are no stock images, videos, 3D model files, external fonts, runtime packages, or third-party rendering services. The world is created by one compiled WebGL 2 fragment shader assembled from focused scene modules, while the optional score is synthesized with the Web Audio API.
 
 ## The experience
 
@@ -57,15 +59,23 @@ Use the repository root as the publish directory. No build command is required.
 
 ```text
 .
-├── index.html              Semantic story, controls, and chapter content
-├── styles.css              Editorial layout, responsive UI, and motion system
+├── index.html                 Semantic story, controls, and chapter content
+├── styles/
+│   ├── base.css               Identity, canvas, chrome, loader, and sound UI
+│   ├── experience.css         Chapters, typography, navigation, and actions
+│   └── responsive.css         Mobile and reduced-motion adaptations
 ├── js/
-│   ├── app.js              Scroll direction, chapter choreography, UI, input
-│   ├── audio.js            Procedural Web Audio soundtrack
-│   ├── renderer.js         WebGL lifecycle, adaptive resolution, uniforms
-│   └── shaders.js          Fullscreen vertex shader and cinematic fragment shader
+│   ├── app.js                 Scroll direction, chapter choreography, UI, input
+│   ├── audio.js               Procedural Web Audio soundtrack
+│   ├── renderer.js            WebGL lifecycle, adaptive resolution, uniforms
+│   ├── shaders.js             Shader assembly and fullscreen vertex shader
+│   └── shader/
+│       ├── core.js            Noise, stars, nebulae, palette, shared functions
+│       ├── scenes-a.js        Signal, Awaken, and Passage
+│       └── scenes-b.js        Memory, Direction, Horizon, and final composition
 ├── assets/
-│   └── favicon.svg         Original vector identity mark
+│   ├── favicon.svg            Original vector identity mark
+│   └── og.jpg                 Original social preview artwork
 ├── site.webmanifest
 ├── robots.txt
 └── vercel.json
